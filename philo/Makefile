@@ -6,7 +6,7 @@
 #    By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/07 12:00:49 by jwolfram          #+#    #+#              #
-#    Updated: 2025/01/07 13:35:54 by jwolfram         ###   ########.fr        #
+#    Updated: 2025/01/07 15:17:23 by jwolfram         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,19 +18,24 @@ CC = cc
 
 CFLAGS = -Wall -Werror -Wextra
 
-INCLUDES = -I./philo.h \
+INCLUDES = -I./includes
 
 LDFLAGS = -lpthread
 
 ### FILES ###
 
-SRC = main.c \
+FILES = main \
+	  utils \
+
+SRC_DIR = src
+
+SRC = ${FILES:%=${OBJ_DIR}/%.c}
 
 OBJ_DIR = obj
 
 OBJ_SORT = ${sort ${dir ${OBJ}}}
 
-OBJ = ${SRC:%=${OBJ_DIR}/%.o}
+OBJ = ${FILES:%=${OBJ_DIR}/%.o}
 
 ### TARGETS ###
 
@@ -39,8 +44,8 @@ all: ${NAME}
 ${NAME}: ${OBJ}
 	${CC} ${CFLAGS} ${LDFLAGS} $^ ${INCLUDES} -o $@
 
-${OBJ_DIR}/%.o: ${SRC} | ${OBJ_SORT}
-	${CC} ${CFLAGS} $< ${INCLUDE} -c  -o $@
+${OBJ_DIR}/%.o: ${SRC_DIR}/%.c | ${OBJ_SORT}
+	${CC} ${CFLAGS} $< ${INCLUDES} -c  -o $@
 
 ${OBJ_SORT}:
 	mkdir -p $@
