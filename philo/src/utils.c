@@ -6,11 +6,37 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 13:55:10 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/01/07 14:13:37 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/02/26 13:57:15 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int		ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*res;
+	size_t	overflow_check;
+
+	if (!nmemb || !size)
+		return (malloc(0));
+	overflow_check = nmemb * size;
+	if (overflow_check / size != nmemb)
+		return (NULL);
+	res = (void *)malloc(nmemb * size);
+	if (!res)
+		return (NULL);
+	return (memset(res, 0, nmemb * size), res);
+}
 
 static int ft_isspace(char c)
 {
