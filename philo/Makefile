@@ -6,7 +6,7 @@
 #    By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/07 12:00:49 by jwolfram          #+#    #+#              #
-#    Updated: 2025/01/07 15:17:23 by jwolfram         ###   ########.fr        #
+#    Updated: 2025/03/05 14:56:39 by jwolfram         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,10 @@ LDFLAGS = -lpthread
 ### FILES ###
 
 FILES = main \
-	  utils \
+		init \
+		routine \
+	  	utils_libft \
+	  	utils_other \
 
 SRC_DIR = src
 
@@ -53,7 +56,7 @@ ${OBJ_SORT}:
 clean:
 	rm -fr ${OBJ_DIR}
 
-fclean:
+fclean: clean
 	rm -fr ${NAME}
 
 re: fclean all

@@ -1,16 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   utils_libft.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 13:55:10 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/02/26 13:57:15 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:30:35 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+char	*ft_strncpy(char *dest, char *src, int n)
+{
+	int	i;
+
+	i = 0;
+	dest = (char *)ft_calloc(n + 1, sizeof(char));
+	if (!dest)
+		return (NULL);
+	while (src[i] && i < n)
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);	
+}
 
 int		ft_strlen(char *str)
 {
@@ -38,34 +55,17 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	return (memset(res, 0, nmemb * size), res);
 }
 
-static int ft_isspace(char c)
+unsigned int	ft_atoi(char *str)
 {
-	if (c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\v' || c == '\f')
-		return (1);
-	return (0);
-}
-
-int	ft_atoi(char *str)
-{
-	int	i;
-	int	res;
-	int	neg;
+	int				i;
+	unsigned int	res;
 
 	i = 0;
 	res = 0;
-	neg = 1;
-	while (ft_isspace(str[i]))
-		i++;
-	if (str[i] == '-' || str[i] == '+')
-	{
-		if (str[i] == '-')
-			neg *= -1;
-		i++;	
-	}
 	while (str[i] && str[i] >= '0' && str[i] <= '9')
 	{
 		res = res * 10 + str[i] - '0';
 		i++;
 	}
-	return (res * neg);
+	return (res);
 }
