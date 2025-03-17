@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:19:08 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/05 15:08:13 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/17 13:37:50 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 int	philo(t_data *data)
 {
-	time_init(data);
+	if (time_init(data))
+		return (free(data->time), FLS);
 	if (list_init(data))
-		return (FLS);
+		return (free_time(data->time), FLS);
 	if (routine_init(data))
 		return (FLS); // free nodes
 	return (TR);

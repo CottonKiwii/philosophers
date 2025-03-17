@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:49:23 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/05 16:06:24 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/17 14:56:55 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,15 @@ void	*philo_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	gettimeofday(&philo->time->start, NULL);
-	printf("%ld Philosopher %u sat down\n", gettime(philo->time->start), philo->nbr);
+	if (pthread_mutex_lock(philo->lock))
+		return (NULL);
+	if (pthread_mutex_unlock(philo->lock))
+		return (NULL);
+	philo->start = gettime(0);
+	printf("%ld Philosopher %u sat down\n", gettime(philo->start), philo->nbr);
+	if (!check_death(philo->time, philo))
+		return (NULL);
+	while (!philo->time->end_program)
+	{}
 	return (NULL);
 }

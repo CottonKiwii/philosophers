@@ -6,7 +6,7 @@
 #    By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/07 12:00:49 by jwolfram          #+#    #+#              #
-#    Updated: 2025/03/05 14:56:39 by jwolfram         ###   ########.fr        #
+#    Updated: 2025/03/17 13:19:27 by jwolfram         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,9 +26,11 @@ LDFLAGS = -lpthread
 
 FILES = main \
 		init \
+		check \
 		routine \
 	  	utils_libft \
 	  	utils_other \
+		free \
 
 SRC_DIR = src
 

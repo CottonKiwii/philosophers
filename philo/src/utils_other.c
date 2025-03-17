@@ -6,18 +6,22 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:14:38 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/05 16:02:01 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/17 13:18:18 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-long	gettime(struct timeval start)
+unsigned long	gettime(unsigned long start)
 {
 	struct timeval	cur;
+	unsigned long	time;
 
 	gettimeofday(&cur, NULL);
-	return (cur.tv_usec - start.tv_usec);
+	time = cur.tv_sec * 1000 + cur.tv_usec / 1000;
+	if (start)
+		return (time - start);
+	return (time);
 }
 
 static int	is_overflowing(char *str)
