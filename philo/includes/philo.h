@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:18:17 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/17 13:34:18 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/18 12:48:10 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,15 @@
 
 # define TR 0
 # define FLS 1
+
+typedef enum e_msg
+{
+	DEATH,
+	FORK,
+	EAT,
+	SLEEP,
+	THINK
+}	t_msg;
 
 typedef struct s_time
 {
@@ -56,7 +65,8 @@ int				time_init(t_data *data);
 int				list_init(t_data *data);
 int				routine_init(t_data *data);
 
-int				check_death(t_time *time, t_philo *philo);
+int				check_loop(t_data *data);
+int				check_death(t_data *data, t_philo *philo);
 
 void			*philo_routine(void *arg);
 
@@ -68,6 +78,8 @@ void			*ft_calloc(size_t nmemb, size_t size);
 
 int				is_valid(char *str);
 unsigned long	gettime(unsigned long start);
+int				put_msg(t_msg status, t_philo *philo);
+t_philo			*get_philo(t_data *data, unsigned int i);
 
 /* FREE */
 void	free_time(t_time *time);

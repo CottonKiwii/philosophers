@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:49:23 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/17 14:56:55 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/18 13:13:47 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,9 @@ void	*philo_routine(void *arg)
 	if (pthread_mutex_unlock(philo->lock))
 		return (NULL);
 	philo->start = gettime(0);
-	printf("%ld Philosopher %u sat down\n", gettime(philo->start), philo->nbr);
-	if (!check_death(philo->time, philo))
+	if (check_death(NULL, philo))
 		return (NULL);
-	while (!philo->time->end_program)
+	while (philo->time->end_program)
 	{}
 	return (NULL);
 }

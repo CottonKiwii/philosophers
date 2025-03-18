@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:14:38 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/17 13:18:18 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/18 13:13:23 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,42 @@ unsigned long	gettime(unsigned long start)
 
 	gettimeofday(&cur, NULL);
 	time = cur.tv_sec * 1000 + cur.tv_usec / 1000;
-	if (start)
-		return (time - start);
-	return (time);
+	printf("%lu - %lu\n", time, start);
+	return (time - start);
+}
+
+int	put_msg(t_msg status, t_philo *philo)
+{
+	int				check;
+
+	check = 0;
+	if (status == DEATH)
+		check = printf("%lu %u died\n", gettime(philo->start), philo->nbr);
+	if (check == -1)
+		return (FLS);
+	if (!philo->time->end_program)
+		return (TR);
+	if (status == FORK)
+		check = printf("%lu %u has taken a fork\n", gettime(philo->start), philo->nbr);
+	else if (status == EAT)
+		check = printf("%lu %u is eating\n", gettime(philo->start), philo->nbr);
+	else if (status == SLEEP)
+		check = printf("%lu %u is sleeping\n", gettime(philo->start), philo->nbr);
+	else if (status == THINK)
+		check = printf("%lu %u is thinking\n", gettime(philo->start), philo->nbr);
+	if (check == -1)
+		return (FLS);
+	return (TR);
+}
+
+t_philo *get_philo(t_data *data, unsigned int i)
+{
+	t_philo *cur;
+
+	cur = data->philo_first;
+	while (cur->nbr != i)
+		cur = cur->next;
+	return (cur);
 }
 
 static int	is_overflowing(char *str)

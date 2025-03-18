@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:33:45 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/17 14:51:26 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/18 13:11:53 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,6 @@ static int	pthread_init(t_philo *philo, pthread_mutex_t *lock)
 
 	while (philo->nbr <= philo->time->philo_amount)
 	{
-		if (pthread_create(&id, NULL, philo_routine, (void *)philo))
-			return (FLS);
 		philo->id = id;
 		philo->lock = lock;
 		philo->fork = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
@@ -76,7 +74,8 @@ static int	pthread_init(t_philo *philo, pthread_mutex_t *lock)
 			return (FLS);
 		if (pthread_mutex_init(philo->fork, NULL))
 			return (FLS);
-		printf("%d\n", philo->nbr);
+		if (pthread_create(&id, NULL, philo_routine, (void *)philo))
+			return (FLS);
 		if (philo->nbr == philo->time->philo_amount)
 			break ;
 		philo = philo->next;
@@ -98,11 +97,8 @@ int	routine_init(t_data *data)
 		return (FLS);
 	if (pthread_mutex_unlock(&lock))
 		return (FLS);
-	while (1)
-	{
-		if (check_death(data->time, NULL))
-			break ;
-	}
+	if (check_loop(data))
+		return (FLS);
 	while (philo->nbr <= data->time->philo_amount)
 	{
 		if (pthread_join(philo->id, NULL))
