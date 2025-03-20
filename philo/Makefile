@@ -6,7 +6,7 @@
 #    By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/07 12:00:49 by jwolfram          #+#    #+#              #
-#    Updated: 2025/03/17 13:19:27 by jwolfram         ###   ########.fr        #
+#    Updated: 2025/03/20 17:18:39 by jwolfram         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 
 INCLUDES = -I./includes
 
@@ -26,7 +26,7 @@ LDFLAGS = -lpthread
 
 FILES = main \
 		init \
-		check \
+		time \
 		routine \
 	  	utils_libft \
 	  	utils_other \

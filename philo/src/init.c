@@ -6,32 +6,26 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:33:45 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/18 13:11:53 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/20 17:56:56 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	time_init(t_data *data)
+int	data_init(t_data *data, char **argv)
 {
-	t_time	*time;
-
-	time = (t_time *)ft_calloc(1, sizeof(t_time));
-	if (!time)
-		return (FLS);
-	time->philo_amount = ft_atoi(data->argv[1]);
-	time->to_die = ft_atoi(data->argv[2]);
-	time->to_eat = ft_atoi(data->argv[3]);
-	time->to_sleep = ft_atoi(data->argv[4]);
-	if (data->argv[5])
-	time->eat_amount = ft_atoi(data->argv[5]);
+	data->philo_amount = ft_atoi(argv[1]);
+	data->to_die = ft_atoi(argv[2]);
+	data->to_eat = ft_atoi(argv[3]);
+	data->to_sleep = ft_atoi(argv[4]);
+	if (argv[5])
+		data->eat_amount = ft_atoi(argv[5]);
 	else
-		time->eat_amount = 0;
-	time->check = (unsigned long *)ft_calloc(ft_atoi(data->argv[1]), sizeof(unsigned int));
-	if (!time->check)
+		data->eat_amount = 0;
+	data->check = (unsigned long *)ft_calloc(ft_atoi(argv[1]), sizeof(unsigned int));
+	if (!data->check)
 		return (FLS);
-	time->end_program = FLS;
-	data->time = time;
+	data->end_program = FLS;
 	return (TR);
 }
 
@@ -40,43 +34,43 @@ int	list_init(t_data *data)
 	unsigned int	i;
 	t_philo			*philo;
 
-	i = 1;
+	i = 0;
 	philo = NULL;
-	while (i <= ft_atoi(data->argv[1]))
+	while (i < data->philo_amount)
 	{
 		philo = (t_philo *)ft_calloc(1, sizeof(t_philo));
 		if (!philo)
 			return (FLS);
-		philo->nbr = i;
-		philo->time = data->time;
-		if (i == 1)
+		philo->idx = i;
+		philo->data = data;
+		printf("Philo %u Node was created\n", philo->idx); // dev
+		if (i == 0)
 			data->philo_first = philo;
 		else
-			data->philo_last->next = philo;
-		data->philo_last = philo;
+			get_philo(data, i - 1)->next = philo;
 		philo = philo->next;
 		i++;
 	}
-	data->philo_last->next = data->philo_first;
+	get_philo(data, data->philo_amount - 1)->next = data->philo_first;
 	return (TR);
 }
 
-static int	pthread_init(t_philo *philo, pthread_mutex_t *lock)
+static int	pthread_init(t_philo *philo)
 {
 	pthread_t		id;
 
-	while (philo->nbr <= philo->time->philo_amount)
+	while (philo->idx < philo->data->philo_amount)
 	{
 		philo->id = id;
-		philo->lock = lock;
 		philo->fork = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
 		if (!philo->fork)
 			return (FLS);
 		if (pthread_mutex_init(philo->fork, NULL))
 			return (FLS);
+		printf("Philo %u is starting routine\n", philo->idx); // dev
 		if (pthread_create(&id, NULL, philo_routine, (void *)philo))
 			return (FLS);
-		if (philo->nbr == philo->time->philo_amount)
+		if (philo->idx == philo->data->philo_amount - 1)
 			break ;
 		philo = philo->next;
 	}
@@ -93,19 +87,12 @@ int	routine_init(t_data *data)
 		return (FLS);
 	if (pthread_mutex_lock(&lock))
 		return (FLS);
-	if (pthread_init(philo, &lock))
+	data->lock = &lock;
+	if (pthread_init(philo))
 		return (FLS);
 	if (pthread_mutex_unlock(&lock))
 		return (FLS);
 	if (check_loop(data))
 		return (FLS);
-	while (philo->nbr <= data->time->philo_amount)
-	{
-		if (pthread_join(philo->id, NULL))
-			return (pthread_mutex_destroy(&lock), FLS);
-		if (philo->nbr == philo->time->philo_amount)
-			break ;
-		philo = philo->next;
-	}
 	return (pthread_mutex_destroy(&lock), TR);
 }

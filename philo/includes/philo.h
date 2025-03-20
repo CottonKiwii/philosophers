@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:18:17 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/18 12:48:10 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/20 17:30:02 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,42 +31,38 @@ typedef enum e_msg
 	THINK
 }	t_msg;
 
-typedef struct s_time
+
+typedef struct s_philo
 {
+	pthread_t		id;
+	pthread_mutex_t	*fork;
+	unsigned int	idx;
+	unsigned long	start;
+	struct s_philo	*next;
+	struct s_data	*data;
+}	t_philo;
+
+typedef struct s_data
+{
+	t_philo			*philo_first;
+	pthread_mutex_t	*lock;
 	unsigned int	philo_amount;
 	unsigned int	to_die;
 	unsigned int	to_eat;
 	unsigned int	to_sleep;
 	unsigned int	eat_amount;
 	unsigned long	*check;
+	int				start;
 	int				end_program;
-}	t_time;
-
-typedef struct s_philo
-{
-	unsigned int	nbr;
-	unsigned long	start;
-	pthread_t		id;
-	pthread_mutex_t	*fork;
-	pthread_mutex_t	*lock;
-	struct s_philo	*next;
-	t_time			*time;
-}	t_philo;
-
-typedef struct s_data
-{
-	char			**argv;
-	t_philo			*philo_first;
-	t_philo			*philo_last;
-	t_time			*time;
 }	t_data;
 
-int				time_init(t_data *data);
+int				data_init(t_data *data, char **argv);
 int				list_init(t_data *data);
 int				routine_init(t_data *data);
 
 int				check_loop(t_data *data);
-int				check_death(t_data *data, t_philo *philo);
+int				check_time(t_data *data);
+int				update_time(t_philo *philo);
 
 void			*philo_routine(void *arg);
 
@@ -82,6 +78,6 @@ int				put_msg(t_msg status, t_philo *philo);
 t_philo			*get_philo(t_data *data, unsigned int i);
 
 /* FREE */
-void	free_time(t_time *time);
+int				free_all(t_data *data, int status);
 
 #endif
