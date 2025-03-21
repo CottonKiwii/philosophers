@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:18:17 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/21 14:33:26 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 17:29:32 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_data
 	t_philo			*philo_first;
 	pthread_mutex_t	*lock;
 	unsigned int	philo_amount;
-	unsigned int	to_die;
+	unsigned long	to_die;
 	unsigned int	to_eat;
 	unsigned int	to_sleep;
 	unsigned int	eat_amount;
