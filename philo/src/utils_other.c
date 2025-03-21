@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:14:38 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/21 12:25:46 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 14:30:20 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,20 @@ unsigned long	gettime(unsigned long start)
 	return (time - start);
 }
 
+void	ft_sleep(t_data *data, unsigned long ms)
+{
+	unsigned long	now;
+
+	now = gettime(0);
+	while (1)
+	{
+		pthread_mutex_lock(data->lock);
+		if (!data->end_program || gettime(now) >= ms)
+			break ;
+		pthread_mutex_unlock(data->lock);
+	}
+	pthread_mutex_unlock(data->lock);
+}
 
 t_philo *get_philo(t_data *data, unsigned int i)
 {
