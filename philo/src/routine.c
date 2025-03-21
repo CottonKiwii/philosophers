@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:49:23 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/21 13:00:06 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 13:11:21 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ void	*philo_routine(void *arg)
 	wait_for_start(philo);
 	printf("%lu %u is starting routine\n", gettime(philo->data->start), philo->idx); // dev
 	while (philo->data->end_program)
-	{}
+	{
+		usleep(1);
+	}
 	return (NULL);
 }

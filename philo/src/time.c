@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 13:07:55 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/21 13:05:53 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 13:19:32 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,25 +40,25 @@ int	check_loop(t_data *data)
 	return (TR);
 }
 
-int	put_msg(t_msg status, t_philo *philo)
+int	put_msg(t_msg status, t_data *data, int idx)
 {
 	int				check;
 
 	check = 0;
 	if (status == DEATH)
-		check = printf("%lu %u died\n", gettime(philo->data->start), philo->idx);
+		check = printf("%lu %u died\n", gettime(data->start), idx);
 	if (check == -1)
 		return (FLS);
-	if (!philo->data->end_program)
+	if (!data->end_program)
 		return (TR);
 	if (status == FORK)
-		check = printf("%lu %u has taken a fork\n", gettime(philo->data->start), philo->idx);
+		check = printf("%lu %u has taken a fork\n", gettime(data->start), idx);
 	else if (status == EAT)
-		check = printf("%lu %u is eating\n", gettime(philo->data->start), philo->idx);
+		check = printf("%lu %u is eating\n", gettime(data->start), idx);
 	else if (status == SLEEP)
-		check = printf("%lu %u is sleeping\n", gettime(philo->data->start), philo->idx);
+		check = printf("%lu %u is sleeping\n", gettime(data->start), idx);
 	else if (status == THINK)
-		check = printf("%lu %u is thinking\n", gettime(philo->data->start), philo->idx);
+		check = printf("%lu %u is thinking\n", gettime(data->start), idx);
 	if (check == -1)
 		return (FLS);
 	return (TR);
@@ -67,20 +67,24 @@ int	put_msg(t_msg status, t_philo *philo)
 int	check_time(t_data *data)
 {
 	unsigned int	i;
+	//static int counter = 0;
 
 	if (pthread_mutex_lock(data->lock))
 		return (FLS);
 	i = 0;
 	while (i < data->philo_amount) 
 	{
+		//printf("are we here? %d\n", counter++);
 		if (gettime(data->check[i]) >= data->to_die)
 		{
 			data->end_program = TR;
-			put_msg(DEATH, get_philo(data, i + 1));
+			//printf("hello\n");
+			put_msg(DEATH, data, i + 1);
 			break ;
 		}
 		i++;
 	}
+	//printf("here?\n");
 	if (pthread_mutex_unlock(data->lock))
 		return (FLS);
 	return (TR);

@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:18:17 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/21 12:21:16 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 13:19:11 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <stdio.h>
 # include <string.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include <sys/time.h>
 
 # define TR 0
@@ -73,7 +74,7 @@ void			*ft_calloc(size_t nmemb, size_t size);
 
 int				is_valid(char *str);
 unsigned long	gettime(unsigned long start);
-int				put_msg(t_msg status, t_philo *philo);
+int				put_msg(t_msg status, t_data *data, int idx);
 t_philo			*get_philo(t_data *data, unsigned int i);
 
 /* FREE */
