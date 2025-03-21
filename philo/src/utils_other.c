@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:14:38 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/20 17:09:44 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 12:25:46 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ unsigned long	gettime(unsigned long start)
 	unsigned long	time;
 
 	gettimeofday(&cur, NULL);
-	time = cur.tv_sec * 1000 + cur.tv_usec / 1000;
-	printf("%lu - %lu = %lu\n", time, start, (time - start)); // dev
+	time = cur.tv_sec * 1000 + (cur.tv_usec / 1000);
 	return (time - start);
 }
 

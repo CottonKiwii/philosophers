@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:49:23 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/20 17:54:11 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 13:00:06 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,23 @@
 
 static unsigned int		start_routine(t_philo *philo)
 {
+	unsigned int	res;
+
 	if (pthread_mutex_lock(philo->data->lock))
 		return (FLS);
-	if (philo->data->start)
+	res = philo->data->start;
+	if (pthread_mutex_unlock(philo->data->lock))
+		return (FLS);
+	return (res);
+	/*if (philo->data->start)
 		return (TR);
-	return (FLS);
+	return (FLS);*/
 }
 
 static int	wait_for_start(t_philo *philo)
 {
-	if (philo->idx + 1 == philo->data->philo_amount)
-		philo->data->start = 1;
-	while (start_routine(philo))
-	{
-		if (pthread_mutex_unlock(philo->data->lock))
-			return (FLS);
-	}
-	if (pthread_mutex_unlock(philo->data->lock))
-		return (FLS);
+	while (!start_routine(philo))
+		;
 	return (TR);
 }
 
@@ -41,6 +40,7 @@ void	*philo_routine(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_for_start(philo);
+	printf("%lu %u is starting routine\n", gettime(philo->data->start), philo->idx); // dev
 	while (philo->data->end_program)
 	{}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 13:07:55 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/20 17:11:56 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 13:05:53 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ int	update_time(t_philo *philo)
 {
 	if (pthread_mutex_lock(philo->data->lock))
 		return (FLS);
-	if (!philo->start)
-		philo->start = gettime(0);
-	philo->data->check[philo->idx] = gettime(philo->start);
+	philo->data->check[philo->idx] = gettime(philo->data->start);
 	if (pthread_mutex_unlock(philo->data->lock))
 		return (FLS);
 	return (TR);
@@ -26,6 +24,14 @@ int	update_time(t_philo *philo)
 
 int	check_loop(t_data *data)
 {
+	unsigned int	i;
+
+	i = 0;
+	while (i < data->philo_amount)
+	{
+		data->check[i] = data->start;
+		i++;
+	}
 	while (data->end_program)
 	{
 		if (check_time(data))
@@ -40,19 +46,19 @@ int	put_msg(t_msg status, t_philo *philo)
 
 	check = 0;
 	if (status == DEATH)
-		check = printf("%lu %u died\n", gettime(philo->start), philo->idx);
+		check = printf("%lu %u died\n", gettime(philo->data->start), philo->idx);
 	if (check == -1)
 		return (FLS);
 	if (!philo->data->end_program)
 		return (TR);
 	if (status == FORK)
-		check = printf("%lu %u has taken a fork\n", gettime(philo->start), philo->idx);
+		check = printf("%lu %u has taken a fork\n", gettime(philo->data->start), philo->idx);
 	else if (status == EAT)
-		check = printf("%lu %u is eating\n", gettime(philo->start), philo->idx);
+		check = printf("%lu %u is eating\n", gettime(philo->data->start), philo->idx);
 	else if (status == SLEEP)
-		check = printf("%lu %u is sleeping\n", gettime(philo->start), philo->idx);
+		check = printf("%lu %u is sleeping\n", gettime(philo->data->start), philo->idx);
 	else if (status == THINK)
-		check = printf("%lu %u is thinking\n", gettime(philo->start), philo->idx);
+		check = printf("%lu %u is thinking\n", gettime(philo->data->start), philo->idx);
 	if (check == -1)
 		return (FLS);
 	return (TR);

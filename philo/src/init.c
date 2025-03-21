@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:33:45 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/20 17:56:56 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 13:07:45 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	data_init(t_data *data, char **argv)
 		data->eat_amount = ft_atoi(argv[5]);
 	else
 		data->eat_amount = 0;
-	data->check = (unsigned long *)ft_calloc(ft_atoi(argv[1]), sizeof(unsigned int));
+	data->check = (unsigned long *)ft_calloc(ft_atoi(argv[1]), sizeof(unsigned long));
 	if (!data->check)
 		return (FLS);
 	data->end_program = FLS;
@@ -43,7 +43,6 @@ int	list_init(t_data *data)
 			return (FLS);
 		philo->idx = i;
 		philo->data = data;
-		printf("Philo %u Node was created\n", philo->idx); // dev
 		if (i == 0)
 			data->philo_first = philo;
 		else
@@ -57,18 +56,14 @@ int	list_init(t_data *data)
 
 static int	pthread_init(t_philo *philo)
 {
-	pthread_t		id;
-
 	while (philo->idx < philo->data->philo_amount)
 	{
-		philo->id = id;
 		philo->fork = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
 		if (!philo->fork)
 			return (FLS);
 		if (pthread_mutex_init(philo->fork, NULL))
 			return (FLS);
-		printf("Philo %u is starting routine\n", philo->idx); // dev
-		if (pthread_create(&id, NULL, philo_routine, (void *)philo))
+		if (pthread_create(&philo->id, NULL, philo_routine, (void *)philo))
 			return (FLS);
 		if (philo->idx == philo->data->philo_amount - 1)
 			break ;
@@ -80,19 +75,21 @@ static int	pthread_init(t_philo *philo)
 int	routine_init(t_data *data)
 {
 	t_philo			*philo;
-	pthread_mutex_t	lock;
 
+	data->lock = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
+	if (!data->lock)
+		return (FLS);
 	philo = data->philo_first;
-	if (pthread_mutex_init(&lock, NULL))
+	if (pthread_mutex_init(data->lock, NULL))
 		return (FLS);
-	if (pthread_mutex_lock(&lock))
+	if (pthread_mutex_lock(data->lock))
 		return (FLS);
-	data->lock = &lock;
 	if (pthread_init(philo))
 		return (FLS);
-	if (pthread_mutex_unlock(&lock))
+	data->start = gettime(0);
+	if (pthread_mutex_unlock(data->lock))
 		return (FLS);
 	if (check_loop(data))
 		return (FLS);
-	return (pthread_mutex_destroy(&lock), TR);
+	return (TR);
 }

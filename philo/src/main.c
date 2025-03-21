@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:19:08 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/20 17:25:18 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 13:00:21 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,23 @@
 
 int	philo(t_data *data)
 {
+	int				status;
+	unsigned int	i;
+	t_philo			*philo;
+
 	if (list_init(data))
 		return (free_all(data, FLS));
-	if (routine_init(data))
-		return (FLS);
-	return (TR);
+	status = routine_init(data);
+	philo = data->philo_first;
+	i = 0;
+	while (i < data->philo_amount)
+	{
+		if (pthread_join(philo->id, NULL))
+			return (FLS);
+		philo = philo->next;
+		i++;
+	}
+	return (status);
 }
 
 int	main(int argc, char **argv)

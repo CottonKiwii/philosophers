@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:18:17 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/20 17:30:02 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 12:21:16 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ typedef struct s_philo
 	pthread_t		id;
 	pthread_mutex_t	*fork;
 	unsigned int	idx;
-	unsigned long	start;
 	struct s_philo	*next;
 	struct s_data	*data;
 }	t_philo;
@@ -52,7 +51,7 @@ typedef struct s_data
 	unsigned int	to_sleep;
 	unsigned int	eat_amount;
 	unsigned long	*check;
-	int				start;
+	unsigned long	start;
 	int				end_program;
 }	t_data;
 

@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 12:33:36 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/20 17:55:53 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/21 12:58:24 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,7 @@ int	free_all(t_data *data, int status)
 		last = NULL;
 		i++;
 	}
+	pthread_mutex_destroy(data->lock);
+	free(data->lock);
 	return (status);
 }
