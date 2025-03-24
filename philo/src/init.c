@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:33:45 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/21 13:07:45 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/24 17:38:21 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,42 +54,25 @@ int	list_init(t_data *data)
 	return (TR);
 }
 
-static int	pthread_init(t_philo *philo)
+int	pthread_init(t_philo *philo)
 {
 	while (philo->idx < philo->data->philo_amount)
 	{
 		philo->fork = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
 		if (!philo->fork)
 			return (FLS);
+		philo->to_die = philo->data->to_die;
+		philo->to_eat = philo->data->to_eat;
+		philo->to_sleep = philo->data->to_sleep;
+		philo->eat_amount = philo->data->eat_amount;
+		philo->philo_amount = philo->data->philo_amount;
 		if (pthread_mutex_init(philo->fork, NULL))
 			return (FLS);
 		if (pthread_create(&philo->id, NULL, philo_routine, (void *)philo))
 			return (FLS);
-		if (philo->idx == philo->data->philo_amount - 1)
+		if (philo->idx == philo->philo_amount - 1)
 			break ;
 		philo = philo->next;
 	}
-	return (TR);
-}
-
-int	routine_init(t_data *data)
-{
-	t_philo			*philo;
-
-	data->lock = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
-	if (!data->lock)
-		return (FLS);
-	philo = data->philo_first;
-	if (pthread_mutex_init(data->lock, NULL))
-		return (FLS);
-	if (pthread_mutex_lock(data->lock))
-		return (FLS);
-	if (pthread_init(philo))
-		return (FLS);
-	data->start = gettime(0);
-	if (pthread_mutex_unlock(data->lock))
-		return (FLS);
-	if (check_loop(data))
-		return (FLS);
 	return (TR);
 }

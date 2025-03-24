@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:18:17 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/21 17:29:32 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/24 17:57:26 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ typedef struct s_philo
 	pthread_t		id;
 	pthread_mutex_t	*fork;
 	unsigned int	idx;
+	unsigned int	philo_amount;
+	unsigned long	start;
+	unsigned long	to_die;
+	unsigned long	to_eat;
+	unsigned long	to_sleep;
+	unsigned int	eat_amount;
 	struct s_philo	*next;
 	struct s_data	*data;
 }	t_philo;
@@ -48,8 +54,8 @@ typedef struct s_data
 	pthread_mutex_t	*lock;
 	unsigned int	philo_amount;
 	unsigned long	to_die;
-	unsigned int	to_eat;
-	unsigned int	to_sleep;
+	unsigned long	to_eat;
+	unsigned long	to_sleep;
 	unsigned int	eat_amount;
 	unsigned long	*check;
 	unsigned long	start;
@@ -58,12 +64,13 @@ typedef struct s_data
 
 int				data_init(t_data *data, char **argv);
 int				list_init(t_data *data);
-int				routine_init(t_data *data);
+int				pthread_init(t_philo *philo);
 
 int				check_loop(t_data *data);
 int				check_time(t_data *data);
 int				update_time(t_philo *philo);
 
+int				routine_init(t_data *data);
 void			*philo_routine(void *arg);
 
 /* UTILS */
@@ -75,7 +82,7 @@ void			*ft_calloc(size_t nmemb, size_t size);
 int				is_valid(char *str);
 unsigned long	gettime(unsigned long start);
 void			ft_sleep(t_data *data, unsigned long ms);
-int				put_msg(t_msg status, t_data *data, int idx);
+int				put_msg(t_msg status, t_philo *philo, t_data *data, unsigned int idx);
 t_philo			*get_philo(t_data *data, unsigned int i);
 
 /* FREE */

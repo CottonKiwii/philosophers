@@ -6,17 +6,27 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 13:07:55 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/21 14:51:36 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/24 18:11:26 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
+unsigned long	gettime(unsigned long start)
+{
+	struct timeval	cur;
+	unsigned long	time;
+
+	gettimeofday(&cur, NULL);
+	time = cur.tv_sec * 1000 + (cur.tv_usec / 1000);
+	return (time - start);
+}
+
 int	update_time(t_philo *philo)
 {
 	if (pthread_mutex_lock(philo->data->lock))
 		return (FLS);
-	philo->data->check[philo->idx] = gettime(philo->data->start);
+	philo->data->check[philo->idx] = gettime(0);
 	if (pthread_mutex_unlock(philo->data->lock))
 		return (FLS);
 	return (TR);
@@ -40,12 +50,14 @@ int	check_loop(t_data *data)
 	return (TR);
 }
 
-int	put_msg(t_msg status, t_data *data, int idx)
+int	put_msg(t_msg status, t_philo *philo, t_data *data, unsigned int idx)
 {
 	int				check;
 
 	pthread_mutex_lock(data->lock);
 	check = 0;
+	if (philo && !philo->start)
+		philo->start = data->start;
 	if (status == DEATH)
 		check = printf("%lu %u died\n", gettime(data->start), idx);
 	if (check == -1)
@@ -53,13 +65,13 @@ int	put_msg(t_msg status, t_data *data, int idx)
 	if (!data->end_program)
 		return (pthread_mutex_unlock(data->lock), TR);
 	if (status == FORK)
-		check = printf("%lu %u has taken a fork\n", gettime(data->start), idx);
+		check = printf("%lu %u has taken a fork\n", gettime(philo->start), idx);
 	else if (status == EAT)
-		check = printf("%lu %u is eating\n", gettime(data->start), idx);
+		check = printf("%lu %u is eating\n", gettime(philo->start), idx);
 	else if (status == SLEEP)
-		check = printf("%lu %u is sleeping\n", gettime(data->start), idx);
+		check = printf("%lu %u is sleeping\n", gettime(philo->start), idx);
 	else if (status == THINK)
-		check = printf("%lu %u is thinking\n", gettime(data->start), idx);
+		check = printf("%lu %u is thinking\n", gettime(philo->start), idx);
 	pthread_mutex_unlock(data->lock);
 	if (check == -1)
 		return (FLS);
@@ -76,7 +88,7 @@ int	check_time(t_data *data)
 		if (gettime(data->check[i]) >= data->to_die)
 		{
 			data->end_program = TR;
-			put_msg(DEATH, data, i + 1);
+			put_msg(DEATH, NULL, data, i + 1);
 			break ;
 		}
 		i++;

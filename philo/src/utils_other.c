@@ -6,21 +6,11 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:14:38 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/21 14:30:20 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/24 17:45:36 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-unsigned long	gettime(unsigned long start)
-{
-	struct timeval	cur;
-	unsigned long	time;
-
-	gettimeofday(&cur, NULL);
-	time = cur.tv_sec * 1000 + (cur.tv_usec / 1000);
-	return (time - start);
-}
 
 void	ft_sleep(t_data *data, unsigned long ms)
 {
