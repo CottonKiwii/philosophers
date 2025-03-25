@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:33:45 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/24 17:38:21 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/25 13:56:28 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	data_init(t_data *data, char **argv)
 	if (argv[5])
 		data->eat_amount = ft_atoi(argv[5]);
 	else
-		data->eat_amount = 0;
+		data->eat_amount = -1;
 	data->check = (unsigned long *)ft_calloc(ft_atoi(argv[1]), sizeof(unsigned long));
 	if (!data->check)
 		return (FLS);
@@ -68,11 +68,37 @@ int	pthread_init(t_philo *philo)
 		philo->philo_amount = philo->data->philo_amount;
 		if (pthread_mutex_init(philo->fork, NULL))
 			return (FLS);
-		if (pthread_create(&philo->id, NULL, philo_routine, (void *)philo))
-			return (FLS);
+		if (philo->philo_amount == 1)
+			pthread_create(&philo->id, NULL, lonely_routine, (void *)philo);
+		else if (philo->idx % 2)
+			pthread_create(&philo->id, NULL, even_routine, (void *)philo);
+		else
+			pthread_create(&philo->id, NULL, odd_routine, (void *)philo);
 		if (philo->idx == philo->philo_amount - 1)
 			break ;
 		philo = philo->next;
 	}
+	return (TR);
+}
+
+int	routine_init(t_data *data)
+{
+	t_philo			*philo;
+
+	data->lock = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
+	if (!data->lock)
+		return (FLS);
+	philo = data->philo_first;
+	if (pthread_mutex_init(data->lock, NULL))
+		return (FLS);
+	if (pthread_mutex_lock(data->lock))
+		return (FLS);
+	if (pthread_init(philo))
+		return (FLS);
+	data->start = gettime(0);
+	if (pthread_mutex_unlock(data->lock))
+		return (FLS);
+	if (check_loop(data))
+		return (FLS);
 	return (TR);
 }

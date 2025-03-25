@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:14:38 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/24 17:45:36 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/25 13:49:33 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,11 @@ static int	is_overflowing(char *str)
 
 int	is_valid(char *str)
 {
-	int		i;
-
 	if (!str)
 		return (TR);
 	if (!is_overflowing(str))
 		return (FLS);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] < '0' || str[i] > '9')
-			return (FLS);
-		i++;
-	}
+	if (!ft_atoi(str))
+		return (FLS);
 	return (TR);
 }

@@ -6,7 +6,7 @@
 #    By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/07 12:00:49 by jwolfram          #+#    #+#              #
-#    Updated: 2025/03/20 17:18:39 by jwolfram         ###   ########.fr        #
+#    Updated: 2025/03/25 13:16:55 by jwolfram         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,8 @@ FILES = main \
 		init \
 		time \
 		routine \
+		odd_routine \
+		even_routine \
 	  	utils_libft \
 	  	utils_other \
 		free \

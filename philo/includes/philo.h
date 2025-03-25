@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:18:17 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/24 17:57:26 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/25 13:57:01 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_data
 	unsigned long	to_die;
 	unsigned long	to_eat;
 	unsigned long	to_sleep;
+	unsigned int	philos_full;
 	unsigned int	eat_amount;
 	unsigned long	*check;
 	unsigned long	start;
@@ -68,10 +69,16 @@ int				pthread_init(t_philo *philo);
 
 int				check_loop(t_data *data);
 int				check_time(t_data *data);
+int				check_for_end(t_data *data);
 int				update_time(t_philo *philo);
+unsigned long	gettime(unsigned long start);
 
+int				wait_for_start(t_philo *philo);
 int				routine_init(t_data *data);
-void			*philo_routine(void *arg);
+void			check_eat_amount(t_data *data);
+void			*lonely_routine(void *arg);
+void			*even_routine(void *arg);
+void			*odd_routine(void *arg);
 
 /* UTILS */
 int				ft_strlen(char *str);
@@ -80,7 +87,6 @@ char			*ft_strncpy(char *dest, char *src, int n);
 void			*ft_calloc(size_t nmemb, size_t size);
 
 int				is_valid(char *str);
-unsigned long	gettime(unsigned long start);
 void			ft_sleep(t_data *data, unsigned long ms);
 int				put_msg(t_msg status, t_philo *philo, t_data *data, unsigned int idx);
 t_philo			*get_philo(t_data *data, unsigned int i);

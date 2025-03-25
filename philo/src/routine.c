@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:49:23 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/24 18:04:21 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/25 13:57:25 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,81 +24,53 @@ static unsigned int		start_routine(t_philo *philo)
 	return (res);
 }
 
-static int	wait_for_start(t_philo *philo)
+int	wait_for_start(t_philo *philo)
 {
 	while (!start_routine(philo))
 		;
 	return (TR);
 }
 
-static int	check_for_end(t_data *data)
-{
-	unsigned int	res;
-
-	pthread_mutex_lock(data->lock);
-	res = data->end_program;	
-	pthread_mutex_unlock(data->lock);
-	return (res);
-}
-
-void	even_routine(t_philo *philo)
-{
-	ft_sleep(philo->data, 1);
-	pthread_mutex_lock(philo->fork);
-	if (put_msg(FORK, philo, philo->data, philo->idx + 1))
-		return ;
-	pthread_mutex_lock(philo->next->fork);
-	if (put_msg(FORK, philo, philo->data, philo->idx + 1))
-		return ;
-	if (put_msg(EAT, philo, philo->data, philo->idx + 1))
-		return ;
-	update_time(philo);
-	pthread_mutex_unlock(philo->fork);
-	pthread_mutex_unlock(philo->next->fork);
-	ft_sleep(philo->data, philo->data->to_eat);
-	if (put_msg(SLEEP, philo, philo->data, philo->idx + 1))
-		return ;
-	ft_sleep(philo->data, philo->data->to_sleep);
-	if (put_msg(THINK, philo, philo->data, philo->idx + 1))
-		return ;
-}
-
-void	*philo_routine(void *arg)
+void	*lonely_routine(void *arg)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	wait_for_start(philo);
-	printf("%lu %u is starting routine\n", gettime(philo->data->start), philo->idx + 1); // dev
-	gettime(philo->start);
 	while (check_for_end(philo->data))
 	{
-		if (philo->idx % 2)
-			even_routine(philo);				
-		//else
-			// even number routine here
+		ft_sleep(philo->data, 1);
+		pthread_mutex_lock(philo->fork);
+		if (put_msg(FORK, philo, philo->data, philo->idx + 1))
+			return (NULL);
+		ft_sleep(philo->data, philo->to_die);
 	}
 	return (NULL);
 }
 
-int	routine_init(t_data *data)
+int	put_msg(t_msg status, t_philo *philo, t_data *data, unsigned int idx)
 {
-	t_philo			*philo;
+	int				check;
 
-	data->lock = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
-	if (!data->lock)
-		return (FLS);
-	philo = data->philo_first;
-	if (pthread_mutex_init(data->lock, NULL))
-		return (FLS);
-	if (pthread_mutex_lock(data->lock))
-		return (FLS);
-	if (pthread_init(philo))
-		return (FLS);
-	data->start = gettime(0);
-	if (pthread_mutex_unlock(data->lock))
-		return (FLS);
-	if (check_loop(data))
+	pthread_mutex_lock(data->lock);
+	check = 0;
+	if (philo && !philo->start)
+		philo->start = data->start;
+	if (status == DEATH)
+		check = printf("%lu %u died\n", gettime(data->start), idx);
+	if (check == -1)
+		return (pthread_mutex_unlock(data->lock), FLS);
+	if (!data->end_program)
+		return (pthread_mutex_unlock(data->lock), TR);
+	if (status == FORK)
+		check = printf("%lu %u has taken a fork\n", gettime(philo->start), idx);
+	else if (status == EAT)
+		check = printf("%lu %u is eating\n", gettime(philo->start), idx);
+	else if (status == SLEEP)
+		check = printf("%lu %u is sleeping\n", gettime(philo->start), idx);
+	else if (status == THINK)
+		check = printf("%lu %u is thinking\n", gettime(philo->start), idx);
+	pthread_mutex_unlock(data->lock);
+	if (check == -1)
 		return (FLS);
 	return (TR);
 }
