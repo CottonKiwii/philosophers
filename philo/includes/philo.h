@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:18:17 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/25 13:57:01 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/26 16:01:16 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_philo
 	unsigned long	to_die;
 	unsigned long	to_eat;
 	unsigned long	to_sleep;
+	unsigned long	to_think;
 	unsigned int	eat_amount;
 	struct s_philo	*next;
 	struct s_data	*data;

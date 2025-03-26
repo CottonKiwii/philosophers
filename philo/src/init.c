@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:33:45 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/25 13:56:28 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/26 17:31:29 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,29 @@ int	list_init(t_data *data)
 	return (TR);
 }
 
+static void	pthread_set_values(t_philo *philo)
+{
+	philo->to_die = philo->data->to_die;
+	philo->to_eat = philo->data->to_eat;
+	philo->to_sleep = philo->data->to_sleep;
+	philo->eat_amount = philo->data->eat_amount;
+	philo->philo_amount = philo->data->philo_amount;
+	if (philo->idx % 2)
+		philo->to_think = (philo->to_eat * 2 - philo->to_sleep)
+			* ((philo->to_eat * 2) > philo->to_sleep);
+	else
+		philo->to_think = (philo->to_eat - philo->to_sleep) 
+			* (philo->to_eat > philo->to_sleep);
+}
+
 int	pthread_init(t_philo *philo)
 {
 	while (philo->idx < philo->data->philo_amount)
 	{
 		philo->fork = (pthread_mutex_t *)ft_calloc(1, sizeof(pthread_mutex_t));
+		pthread_set_values(philo);
 		if (!philo->fork)
 			return (FLS);
-		philo->to_die = philo->data->to_die;
-		philo->to_eat = philo->data->to_eat;
-		philo->to_sleep = philo->data->to_sleep;
-		philo->eat_amount = philo->data->eat_amount;
-		philo->philo_amount = philo->data->philo_amount;
 		if (pthread_mutex_init(philo->fork, NULL))
 			return (FLS);
 		if (philo->philo_amount == 1)
