@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:14:38 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/25 13:49:33 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/27 15:46:49 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,24 +40,24 @@ t_philo *get_philo(t_data *data, unsigned int i)
 static int	is_overflowing(char *str)
 {
 	int		i;
-	char	*ulong;
+	char	*uint;
 
-	ulong = NULL;
+	uint = NULL;
 	if (ft_strlen(str) > 10)
 		return (TR);
 	if (ft_strlen(str) < 10)
 		return (FLS);
-	ulong = ft_strncpy(ulong, "4294967295", 11);
-	if (!ulong)
+	uint = ft_strncpy(uint, "4294967295", 11);
+	if (!uint)
 		return (FLS);
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] > ulong[i])
-			return (free(ulong), TR);
+		if (str[i] > uint[i])
+			return (free(uint), TR);
 		i++;
 	}
-	return (free(ulong), FLS);
+	return (free(uint), FLS);
 }
 
 int	is_valid(char *str)

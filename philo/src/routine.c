@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:49:23 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/25 13:57:25 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/27 16:19:29 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,7 @@ void	*lonely_routine(void *arg)
 	{
 		ft_sleep(philo->data, 1);
 		pthread_mutex_lock(philo->fork);
-		if (put_msg(FORK, philo, philo->data, philo->idx + 1))
-			return (NULL);
+		put_msg(FORK, philo, philo->data, philo->idx + 1);
 		ft_sleep(philo->data, philo->to_die);
 	}
 	return (NULL);
@@ -49,28 +48,24 @@ void	*lonely_routine(void *arg)
 
 int	put_msg(t_msg status, t_philo *philo, t_data *data, unsigned int idx)
 {
-	int				check;
-
 	pthread_mutex_lock(data->lock);
-	check = 0;
 	if (philo && !philo->start)
 		philo->start = data->start;
 	if (status == DEATH)
-		check = printf("%lu %u died\n", gettime(data->start), idx);
-	if (check == -1)
-		return (pthread_mutex_unlock(data->lock), FLS);
+		printf("%lu %u died\n", gettime(data->start), idx);
 	if (!data->end_program)
-		return (pthread_mutex_unlock(data->lock), TR);
-	if (status == FORK)
-		check = printf("%lu %u has taken a fork\n", gettime(philo->start), idx);
-	else if (status == EAT)
-		check = printf("%lu %u is eating\n", gettime(philo->start), idx);
-	else if (status == SLEEP)
-		check = printf("%lu %u is sleeping\n", gettime(philo->start), idx);
-	else if (status == THINK)
-		check = printf("%lu %u is thinking\n", gettime(philo->start), idx);
-	pthread_mutex_unlock(data->lock);
-	if (check == -1)
+	{
+		pthread_mutex_unlock(data->lock);
 		return (FLS);
+	}
+	if (status == FORK)
+		printf("%lu %u has taken a fork\n", gettime(philo->start), idx);
+	else if (status == EAT)
+		printf("%lu %u is eating\n", gettime(philo->start), idx);
+	else if (status == SLEEP)
+		printf("%lu %u is sleeping\n", gettime(philo->start), idx);
+	else if (status == THINK)
+		printf("%lu %u is thinking\n", gettime(philo->start), idx);
+	pthread_mutex_unlock(data->lock);
 	return (TR);
 }

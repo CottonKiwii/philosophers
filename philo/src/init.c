@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:33:45 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/26 17:31:29 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/27 16:53:54 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ static void	pthread_set_values(t_philo *philo)
 	philo->to_sleep = philo->data->to_sleep;
 	philo->eat_amount = philo->data->eat_amount;
 	philo->philo_amount = philo->data->philo_amount;
-	if (philo->idx % 2)
-		philo->to_think = (philo->to_eat * 2 - philo->to_sleep)
-			* ((philo->to_eat * 2) > philo->to_sleep);
+	if (philo->philo_amount % 2 && (philo->to_eat * 2) > philo->to_sleep)
+		philo->to_think = philo->to_eat * 2 - philo->to_sleep;
+	else if (!(philo->philo_amount % 2) && philo->to_eat > philo->to_sleep)
+		philo->to_think = philo->to_eat - philo->to_sleep;
 	else
-		philo->to_think = (philo->to_eat - philo->to_sleep) 
-			* (philo->to_eat > philo->to_sleep);
+		philo->to_think = 0;
 }
 
 int	pthread_init(t_philo *philo)
