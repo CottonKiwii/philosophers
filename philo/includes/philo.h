@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:18:17 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/27 16:19:48 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/28 16:19:47 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,6 @@
 
 # define TR 0
 # define FLS 1
-
-typedef enum e_msg
-{
-	DEATH,
-	FORK,
-	EAT,
-	SLEEP,
-	THINK
-}	t_msg;
-
 
 typedef struct s_philo
 {
@@ -64,22 +54,33 @@ typedef struct s_data
 	int				end_program;
 }	t_data;
 
+/* INIT */
 int				data_init(t_data *data, char **argv);
 int				list_init(t_data *data);
 int				pthread_init(t_philo *philo);
-
-int				check_loop(t_data *data);
-int				check_time(t_data *data);
-int				check_for_end(t_data *data);
-int				update_time(t_philo *philo);
-unsigned long	gettime(unsigned long start);
-
-int				wait_for_start(t_philo *philo);
 int				routine_init(t_data *data);
+
+/* TIME */
+unsigned long	gettime(unsigned long start);
+unsigned long	getmicrosec(unsigned long start);
+int				check_loop(t_data *data);
+int				check_for_end(t_data *data);
 void			check_eat_amount(t_data *data);
+
+/* ROUTINE */
+int				wait_for_start(t_philo *philo);
+void			update_time(t_philo *philo);
+
 void			*lonely_routine(void *arg);
 void			*even_routine(void *arg);
 void			*odd_routine(void *arg);
+
+/* PRINT MESSAGE */
+void			print_death(t_data *data, unsigned int idx);
+int				print_fork(t_philo *philo, unsigned int idx);
+int				print_eating(t_philo *philo, unsigned int idx);
+int				print_sleeping(t_philo *philo, unsigned int idx);
+int				print_thinking(t_philo *philo, unsigned int idx);
 
 /* UTILS */
 int				ft_strlen(char *str);
@@ -89,7 +90,6 @@ void			*ft_calloc(size_t nmemb, size_t size);
 
 int				is_valid(char *str);
 void			ft_sleep(t_data *data, unsigned long ms);
-int				put_msg(t_msg status, t_philo *philo, t_data *data, unsigned int idx);
 t_philo			*get_philo(t_data *data, unsigned int i);
 
 /* FREE */

@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:14:38 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/27 15:46:49 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/28 16:19:22 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ void	ft_sleep(t_data *data, unsigned long ms)
 {
 	unsigned long	now;
 
-	now = gettime(0);
+	now = getmicrosec(0);
 	while (1)
 	{
+		usleep(100);
 		pthread_mutex_lock(data->lock);
-		if (!data->end_program || gettime(now) >= ms)
+		if (!data->end_program || getmicrosec(now) >= (ms * 1000))
 			break ;
 		pthread_mutex_unlock(data->lock);
 	}

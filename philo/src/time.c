@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 13:07:55 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/25 13:44:08 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/28 16:35:53 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,23 @@ unsigned long	gettime(unsigned long start)
 	return (time - start);
 }
 
-int	update_time(t_philo *philo)
+unsigned long	getmicrosec(unsigned long start)
+{
+	struct timeval	cur;
+	unsigned long	time;
+
+	gettimeofday(&cur, NULL);
+	time = cur.tv_usec + (cur.tv_sec * 1000000);
+	return (time - start);
+}
+
+void	update_time(t_philo *philo)
 {
 	if (philo->eat_amount > 0)
 		philo->eat_amount--;
-	if (pthread_mutex_lock(philo->data->lock))
-		return (FLS);
+	pthread_mutex_lock(philo->data->lock);
 	philo->data->check[philo->idx] = gettime(0);
-	if (pthread_mutex_unlock(philo->data->lock))
-		return (FLS);
-	return (TR);
+	pthread_mutex_unlock(philo->data->lock);
 }
 
 void	check_eat_amount(t_data *data)
@@ -50,22 +57,27 @@ int	check_loop(t_data *data)
 	i = 0;
 	while (i < data->philo_amount)
 	{
+		pthread_mutex_lock(data->lock);
 		data->check[i] = data->start;
+		pthread_mutex_unlock(data->lock);
 		i++;
 	}
-	while (data->end_program)
+	while (1)
 	{
 		i = 0;
 		while (i < data->philo_amount) 
 		{
+			pthread_mutex_lock(data->lock);
 			if (gettime(data->check[i]) >= data->to_die)
 			{
-				data->end_program = TR;
-				put_msg(DEATH, NULL, data, i + 1);
-				break ;
+				print_death(data, i + 1);
+				pthread_mutex_unlock(data->lock);
+				return (TR);
 			}
+			pthread_mutex_unlock(data->lock);
 			i++;
 		}
+		usleep(100);
 	}
 	return (TR);
 }
