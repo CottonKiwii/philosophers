@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:14:38 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/28 16:19:22 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/28 17:59:43 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,26 +45,42 @@ static int	is_overflowing(char *str)
 
 	uint = NULL;
 	if (ft_strlen(str) > 10)
-		return (TR);
+		return (0);
 	if (ft_strlen(str) < 10)
-		return (FLS);
+		return (1);
 	uint = ft_strncpy(uint, "4294967295", 11);
 	if (!uint)
-		return (FLS);
+		return (0);
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] > uint[i])
-			return (free(uint), TR);
+			return (free(uint), 0);
 		i++;
 	}
-	return (free(uint), FLS);
+	return (free(uint), 1);
+}
+
+static int	is_number(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] < '0' || str[i] > '9')
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 int	is_valid(char *str)
 {
 	if (!str)
 		return (TR);
+	if (!is_number(str))
+		return (FLS);
 	if (!is_overflowing(str))
 		return (FLS);
 	if (!ft_atoi(str))
