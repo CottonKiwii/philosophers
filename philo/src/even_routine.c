@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/25 12:57:02 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/28 16:19:44 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/28 17:11:41 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,9 @@ static int	even_philo_do(t_philo *philo)
 	if (print_eating(philo, philo->idx + 1))
 		return (pthread_mutex_unlock(philo->next->fork), 
 		pthread_mutex_unlock(philo->fork));
-	if (!philo->eat_amount)
-		check_eat_amount(philo->data);
+	if (!philo->eat_amount && check_eat_amount(philo->data))
+		return (pthread_mutex_unlock(philo->next->fork), 
+		pthread_mutex_unlock(philo->fork));
 	ft_sleep(philo->data, philo->to_eat);
 	pthread_mutex_unlock(philo->next->fork);
 	pthread_mutex_unlock(philo->fork);

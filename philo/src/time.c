@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 13:07:55 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/28 16:35:53 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/28 17:17:47 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,17 @@ void	update_time(t_philo *philo)
 	pthread_mutex_unlock(philo->data->lock);
 }
 
-void	check_eat_amount(t_data *data)
+int	check_eat_amount(t_data *data)
 {
 	pthread_mutex_lock(data->lock);
 	data->philos_full++;
 	if (data->philos_full == data->philo_amount)
+	{
 		data->end_program = TR;
+		return (pthread_mutex_unlock(data->lock), FLS);
+	}
 	pthread_mutex_unlock(data->lock);
+	return (TR);
 }
 
 int	check_loop(t_data *data)
@@ -62,7 +66,7 @@ int	check_loop(t_data *data)
 		pthread_mutex_unlock(data->lock);
 		i++;
 	}
-	while (1)
+	while (check_for_end(data))
 	{
 		i = 0;
 		while (i < data->philo_amount) 

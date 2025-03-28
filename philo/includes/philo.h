@@ -6,7 +6,7 @@
 /*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 12:18:17 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/28 16:19:47 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/28 17:09:26 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ unsigned long	gettime(unsigned long start);
 unsigned long	getmicrosec(unsigned long start);
 int				check_loop(t_data *data);
 int				check_for_end(t_data *data);
-void			check_eat_amount(t_data *data);
+int				check_eat_amount(t_data *data);
 
 /* ROUTINE */
 int				wait_for_start(t_philo *philo);
