@@ -6,7 +6,7 @@
 #    By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/07 12:00:49 by jwolfram          #+#    #+#              #
-#    Updated: 2025/03/31 11:51:12 by jwolfram         ###   ########.fr        #
+#    Updated: 2025/03/31 12:13:00 by jwolfram         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ NAME = philo
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra
 
 INCLUDES = -I./includes
 
@@ -66,18 +66,4 @@ fclean: clean
 
 re: fclean all
 
-### !!!DEV!!! ###
-run: re
-	./philo
-
-test: re
-	cd ./42-philosophers-tester
-	make
-	./test.sh
-	cd ..
-
-norm:
-	norminette src/ 
-### !!!DEV!!! ###
-
-.PHONY: all clean fclean re norm
+.PHONY: all clean fclean re
