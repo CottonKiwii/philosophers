@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 14:49:23 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/31 12:07:19 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/31 12:27:15 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ void	*lonely_routine(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
+	wait_for_start(philo);
 	while (check_for_end(philo->data))
 	{
-		ft_sleep(philo->data, 1);
 		pthread_mutex_lock(philo->fork);
 		print_fork(philo, philo->idx + 1);
 		ft_sleep(philo->data, philo->to_die);
