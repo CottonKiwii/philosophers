@@ -6,7 +6,7 @@
 #    By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/01/07 12:00:49 by jwolfram          #+#    #+#              #
-#    Updated: 2025/03/28 15:02:12 by jwolfram         ###   ########.fr        #
+#    Updated: 2025/03/31 11:51:12 by jwolfram         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -77,7 +77,7 @@ test: re
 	cd ..
 
 norm:
-	norminette ${SRC}
+	norminette src/ 
 ### !!!DEV!!! ###
 
 .PHONY: all clean fclean re norm

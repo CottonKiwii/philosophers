@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 12:33:36 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/25 13:51:27 by jwolfram         ###   ########.fr       */
+/*   Created: 2025/03/31 12:07:41 by jwolfram          #+#    #+#             */
+/*   Updated: 2025/03/31 12:07:44 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,8 @@ int	free_all(t_data *data, int status)
 		last = cur;
 		cur = cur->next;
 		free(last);
-		last = NULL;
 		i++;
 	}
 	pthread_mutex_destroy(data->lock);
-	free(data->lock);
-	return (status);
+	return (free(data->lock), status);
 }

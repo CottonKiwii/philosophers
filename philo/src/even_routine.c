@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   even_routine.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/25 12:57:02 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/28 17:11:41 by jwolfram         ###   ########.fr       */
+/*   Created: 2025/03/31 12:07:32 by jwolfram          #+#    #+#             */
+/*   Updated: 2025/03/31 12:07:34 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,15 @@ static int	even_philo_do(t_philo *philo)
 		return (pthread_mutex_unlock(philo->next->fork));
 	pthread_mutex_lock(philo->fork);
 	if (print_fork(philo, philo->idx + 1))
-		return (pthread_mutex_unlock(philo->next->fork), 
-		pthread_mutex_unlock(philo->fork));
+		return (pthread_mutex_unlock(philo->next->fork),
+			pthread_mutex_unlock(philo->fork));
 	update_time(philo);
 	if (print_eating(philo, philo->idx + 1))
-		return (pthread_mutex_unlock(philo->next->fork), 
-		pthread_mutex_unlock(philo->fork));
+		return (pthread_mutex_unlock(philo->next->fork),
+			pthread_mutex_unlock(philo->fork));
 	if (!philo->eat_amount && check_eat_amount(philo->data))
-		return (pthread_mutex_unlock(philo->next->fork), 
-		pthread_mutex_unlock(philo->fork));
+		return (pthread_mutex_unlock(philo->next->fork),
+			pthread_mutex_unlock(philo->fork));
 	ft_sleep(philo->data, philo->to_eat);
 	pthread_mutex_unlock(philo->next->fork);
 	pthread_mutex_unlock(philo->fork);

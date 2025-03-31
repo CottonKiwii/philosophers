@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_libft.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/07 13:55:10 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/05 13:30:35 by jwolfram         ###   ########.fr       */
+/*   Created: 2025/03/31 12:08:54 by jwolfram          #+#    #+#             */
+/*   Updated: 2025/03/31 12:08:55 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ char	*ft_strncpy(char *dest, char *src, int n)
 		i++;
 	}
 	dest[i] = '\0';
-	return (dest);	
+	return (dest);
 }
 
-int		ft_strlen(char *str)
+int	ft_strlen(char *str)
 {
 	int	i;
 

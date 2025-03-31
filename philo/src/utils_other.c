@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:14:38 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/28 17:59:43 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/31 12:06:19 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	ft_sleep(t_data *data, unsigned long ms)
 	pthread_mutex_unlock(data->lock);
 }
 
-t_philo *get_philo(t_data *data, unsigned int i)
+t_philo	*get_philo(t_data *data, unsigned int i)
 {
-	t_philo *cur;
+	t_philo	*cur;
 
 	cur = data->philo_first;
 	while (cur->idx != i)

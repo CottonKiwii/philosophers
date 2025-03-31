@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/07 12:19:08 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/21 13:00:21 by jwolfram         ###   ########.fr       */
+/*   Created: 2025/03/31 12:07:56 by jwolfram          #+#    #+#             */
+/*   Updated: 2025/03/31 12:07:59 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	main(int argc, char **argv)
 	memset(&data, 0, sizeof(t_data));
 	if (argc < 5 || argc > 6)
 		return (printf("philo: invalid arguments\n"), FLS);
-	if (is_valid(argv[1]) || is_valid(argv[2]) || is_valid(argv[3]) 
+	if (is_valid(argv[1]) || is_valid(argv[2]) || is_valid(argv[3])
 		|| is_valid(argv[4]) || is_valid(argv[5]))
 		return (printf("philo: invalid arguments\n"), FLS);
 	if (data_init(&data, argv))

@@ -6,7 +6,7 @@
 /*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:33:45 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/28 15:06:03 by jwolfram         ###   ########.fr       */
+/*   Updated: 2025/03/31 11:54:18 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ int	data_init(t_data *data, char **argv)
 		data->eat_amount = ft_atoi(argv[5]);
 	else
 		data->eat_amount = -1;
-	data->check = (unsigned long *)ft_calloc(ft_atoi(argv[1]), sizeof(unsigned long));
+	data->check
+		= (unsigned long *)ft_calloc(ft_atoi(argv[1]), sizeof(unsigned long));
 	if (!data->check)
 		return (FLS);
 	data->end_program = FLS;

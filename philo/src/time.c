@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jwolfram <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: jwolfram <jwolfram@student.42vienna.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/17 13:07:55 by jwolfram          #+#    #+#             */
-/*   Updated: 2025/03/28 17:17:47 by jwolfram         ###   ########.fr       */
+/*   Created: 2025/03/31 12:08:34 by jwolfram          #+#    #+#             */
+/*   Updated: 2025/03/31 12:08:37 by jwolfram         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,24 @@ void	update_time(t_philo *philo)
 	pthread_mutex_unlock(philo->data->lock);
 }
 
-int	check_eat_amount(t_data *data)
+static int	check_death(t_data *data)
 {
-	pthread_mutex_lock(data->lock);
-	data->philos_full++;
-	if (data->philos_full == data->philo_amount)
+	unsigned int	i;
+
+	i = 0;
+	while (i < data->philo_amount)
 	{
-		data->end_program = TR;
-		return (pthread_mutex_unlock(data->lock), FLS);
+		pthread_mutex_lock(data->lock);
+		if (gettime(data->check[i]) >= data->to_die)
+		{
+			print_death(data, i + 1);
+			pthread_mutex_unlock(data->lock);
+			return (TR);
+		}
+		pthread_mutex_unlock(data->lock);
+		i++;
 	}
-	pthread_mutex_unlock(data->lock);
-	return (TR);
+	return (FLS);
 }
 
 int	check_loop(t_data *data)
@@ -68,30 +75,9 @@ int	check_loop(t_data *data)
 	}
 	while (check_for_end(data))
 	{
-		i = 0;
-		while (i < data->philo_amount) 
-		{
-			pthread_mutex_lock(data->lock);
-			if (gettime(data->check[i]) >= data->to_die)
-			{
-				print_death(data, i + 1);
-				pthread_mutex_unlock(data->lock);
-				return (TR);
-			}
-			pthread_mutex_unlock(data->lock);
-			i++;
-		}
+		if (!check_death(data))
+			break ;
 		usleep(100);
 	}
 	return (TR);
-}
-
-int	check_for_end(t_data *data)
-{
-	unsigned int	res;
-
-	pthread_mutex_lock(data->lock);
-	res = data->end_program;	
-	pthread_mutex_unlock(data->lock);
-	return (res);
 }
